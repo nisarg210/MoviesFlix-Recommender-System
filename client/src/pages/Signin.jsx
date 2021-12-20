@@ -12,6 +12,7 @@ const Signin = () => {
       .then((re) => {
         console.log(re);
         localStorage.setItem("user",JSON.stringify(re))
+        window.location.reload(true);
       })
       .catch((err)=>{
           console.log(err)

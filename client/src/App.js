@@ -16,7 +16,8 @@ function App() {
     return JSON.parse(localStorage.getItem("user"));
   }
   useEffect(() => {
-    if (getUser) {
+    console.log(getUser());
+    if (getUser()) {
       setlogin(true);
     }
   }, []);
@@ -24,14 +25,17 @@ function App() {
   return (
     <BrowserRouter>
       <Route
-        render={(props) =>login ? (
-          <>
-          
-            <Header {...props} />
+        render={(props) =>
+          login ? (
+            <>
+              <Header {...props} />
+              <Routes />
+              <Footer />
+            </>
+          ) : (
             <Routes />
-            <Footer />
-          </>
-        ):(<Routes />)}
+          )
+        }
       />
     </BrowserRouter>
   );
