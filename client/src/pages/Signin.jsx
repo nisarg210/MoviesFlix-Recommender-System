@@ -11,6 +11,7 @@ const Signin = () => {
       .signInWithPopup(google_provider)
       .then((re) => {
         console.log(re);
+        localStorage.setItem("user",JSON.stringify(re))
       })
       .catch((err)=>{
           console.log(err)
