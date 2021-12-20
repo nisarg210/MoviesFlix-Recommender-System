@@ -6,37 +6,29 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
-
+import Signin from "./pages/Signin";
 import Routes from "./config/Routes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useStateValue } from "./StateProvider";
 
 function App() {
-  const [login, setlogin] = useState(false);
-  function getUser() {
-    return JSON.parse(localStorage.getItem("user"));
-  }
-  useEffect(() => {
-    console.log(getUser());
-    if (getUser()) {
-      setlogin(true);
-    }
-  }, []);
-
+ 
+  const [{ user }, dispatch] = useStateValue();
   return (
     <BrowserRouter>
-      <Route
-        render={(props) =>
-          login ? (
+      {user ? (
+        <Route
+          render={(props) => (
             <>
               <Header {...props} />
               <Routes />
               <Footer />
             </>
-          ) : (
-            <Routes />
-          )
-        }
-      />
+          )}
+        />
+      ) : (
+        <Signin />
+      )}
     </BrowserRouter>
   );
 }
