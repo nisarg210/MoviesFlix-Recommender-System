@@ -1,11 +1,12 @@
 import React from "react";
 import GoogleButton from "react-google-button";
-import { firebase } from "../Firebase/firebase";
+import { fb } from "../Firebase/firebase";
+import firebase from 'firebase'
 
 const Signin = () => {
   const signinwithfirebase = () => {
     var google_provider = new firebase.auth.GoogleAuthProvider();
-    firebase
+    fb
       .auth()
       .signInWithPopup(google_provider)
       .then((re) => {
