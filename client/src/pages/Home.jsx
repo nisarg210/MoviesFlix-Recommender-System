@@ -6,7 +6,7 @@ import HeroSlide from '../components/hero-slide/HeroSlide';
 import MovieList from '../components/movie-list/MovieList'
 const Home = () => {
     return (
-        <div>
+        <>
              <HeroSlide/>
              <div className="container">
                 <div className="section mb-3">
@@ -50,7 +50,7 @@ const Home = () => {
                 </div>
             </div>
 
-        </div>
+        </>
     )
 }
 
