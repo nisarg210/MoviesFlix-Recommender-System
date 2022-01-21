@@ -5,12 +5,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import Button, { OutlineButton } from '../button/Button';
 import Modal, { ModalContent } from '../modal/Modal';
-
+import top100 from '../../assets/top100.json'
 import tmdbApi, { category, movieType } from '../../api/tmdbApi';
 import apiConfig from '../../api/apiConfig';
 
 import './hero-slide.scss';
 import { useHistory } from 'react-router';
+import axios from 'axios';
 
 const HeroSlide = () => {
 
@@ -19,16 +20,57 @@ const HeroSlide = () => {
     const [movieItems, setMovieItems] = useState([]);
 
     useEffect(() => {
-        const getMovies = async () => {
-            const params = {page: 1}
-            try {
-                const response = await tmdbApi.getMoviesList(movieType.popular, {params});
-                setMovieItems(response.results.slice(1, 4));
-                console.log(response);
-            } catch {
-                console.log('error');
-            }
-        }
+        // const getMovies = async () => {
+        //     const params = {page: 1}
+        //     try {
+        //         const response = await tmdbApi.getMoviesList(movieType.popular, {params});
+        //         setMovieItems(response.results.slice(1, 4));
+        //         console.log(response);
+        //     } catch {
+        //         console.log('error');
+        //     }
+        // }
+        console.log(top100[10]);
+        
+        // const top3=top100.slice(0,3);
+        // console.log(top3);
+       const getMovies = async ()=>{
+        //    let random_list=[]
+        //    let data20={
+        //        "0":[]
+        //    }
+        //    for (let i = 0; i < 20; i++) {
+               
+        //     random_list.push(i)
+        //    }
+        //    random_list.forEach(element => {
+        //     axios.get(`https://api.themoviedb.org/3/movie/${top100[element].id}?api_key=2effdefc3ea56a2c730e827bc2f4e2e2`)
+        //     .then(function(response) {
+        //         data20[0].push(response.data)
+        //     })
+            
+        //    });
+        //    console.log(data20)
+
+           
+           
+           try {
+               let items=[]
+            let random=Math.floor(Math.random() * (100 - 0 +    1));
+               let response = await axios.get(`https://api.themoviedb.org/3/movie/${top100[random].id}?api_key=2effdefc3ea56a2c730e827bc2f4e2e2`)
+               items.push(response.data)
+                random=Math.floor(Math.random() * (100 - 0 +    1));
+                response = await axios.get(`https://api.themoviedb.org/3/movie/${top100[random].id}?api_key=2effdefc3ea56a2c730e827bc2f4e2e2`)
+               items.push(response.data)
+                random=Math.floor(Math.random() * (100 - 0 +    1));
+                response = await axios.get(`https://api.themoviedb.org/3/movie/${top100[random].id}?api_key=2effdefc3ea56a2c730e827bc2f4e2e2`)
+               items.push(response.data)
+               setMovieItems(items)
+            console.log(items);
+           } catch (error) {
+               console.error(error);
+           }
+       }
         getMovies();
     }, []);
 

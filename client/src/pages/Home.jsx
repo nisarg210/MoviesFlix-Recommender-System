@@ -1,15 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { category, movieType, tvType } from '../api/tmdbApi';
 import { OutlineButton } from '../components/button/Button';
 import HeroSlide from '../components/hero-slide/HeroSlide';
 import MovieList from '../components/movie-list/MovieList'
+import mylist from '../assets/mylist.json'
 const Home = () => {
+
+    const [popular, setPopular] = useState([]);
+
+    useEffect(() => {
+      
+    setPopular(mylist[1])
+      
+    }, []);
+    
     return (
         <>
              <HeroSlide/>
              <div className="container">
-                <div className="section mb-3">
+                {/* <div className="section mb-3">
                     <div className="section__header mb-2">
                         <h2>Trending Movies</h2>
                         <Link to="/movie">
@@ -17,7 +27,7 @@ const Home = () => {
                         </Link>
                     </div>
                     <MovieList category={category.movie} type={movieType.popular}/>
-                </div>
+                </div> */}
 
                 <div className="section mb-3">
                     <div className="section__header mb-2">
@@ -26,10 +36,10 @@ const Home = () => {
                             <OutlineButton className="small">View more</OutlineButton>
                         </Link>
                     </div>
-                    <MovieList category={category.movie} type={movieType.top_rated}/>
+                    <MovieList category={category.movie} type="popular" />
                 </div>
 
-                <div className="section mb-3">
+                {/* <div className="section mb-3">
                     <div className="section__header mb-2">
                         <h2>Trending TV</h2>
                         <Link to="/tv">
@@ -47,7 +57,7 @@ const Home = () => {
                         </Link>
                     </div>
                     <MovieList category={category.tv} type={tvType.top_rated}/>
-                </div>
+                </div> */}
             </div>
 
         </>

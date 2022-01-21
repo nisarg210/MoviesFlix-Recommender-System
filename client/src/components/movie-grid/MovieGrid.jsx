@@ -6,7 +6,7 @@ import './movie-grid.scss';
 import MovieCard from '../movie-card/MovieCard';
 import Button, { OutlineButton } from '../button/Button';
 import Input from '../input/Input'
-
+import mylist from'../../assets/mylist.json'
 import tmdbApi, { category, movieType, tvType } from '../../api/tmdbApi';
 
 const MovieGrid = props => {
@@ -19,52 +19,56 @@ const MovieGrid = props => {
     const { keyword } = useParams();
 
     useEffect(() => {
-        const getList = async () => {
-            let response = null;
-            if (keyword === undefined) {
-                const params = {};
-                switch(props.category) {
-                    case category.movie:
-                        response = await tmdbApi.getMoviesList(movieType.upcoming, {params});
-                        break;
-                    default:
-                        response = await tmdbApi.getTvList(tvType.popular, {params});
-                }
-            } else {
-                const params = {
-                    query: keyword
-                }
-                response = await tmdbApi.search(props.category, {params});
-            }
-            setItems(response.results);
-            setTotalPage(response.total_pages);
-        }
-        getList();
-    }, [props.category, keyword]);
+       
+        // const getList = async () => {
+        //     let response = null;
+        //     if (keyword === undefined) {
+        //         const params = {};
+        //         switch(props.category) {
+        //             case category.movie:
+        //                 response = await tmdbApi.getMoviesList(movieType.upcoming, {params});
+        //                 break;
+        //             default:
+        //                 response = await tmdbApi.getTvList(tvType.popular, {params});
+        //         }
+        //     } else {
+        //         const params = {
+        //             query: keyword
+        //         }
+        //         response = await tmdbApi.search(props.category, {params});
+        //     }
+        //     setItems(response.results);
+        //     console.log(response.results)
+        //    console.log(mylist[0],"hlsfdl");
+        //     setTotalPage(response.total_pages);
+        // }
+       setItems(mylist[0])
+        // getList();
+    }, []);
 
-    const loadMore = async () => {
-        let response = null;
-        if (keyword === undefined) {
-            const params = {
-                page: page + 1
-            };
-            switch(props.category) {
-                case category.movie:
-                    response = await tmdbApi.getMoviesList(movieType.upcoming, {params});
-                    break;
-                default:
-                    response = await tmdbApi.getTvList(tvType.popular, {params});
-            }
-        } else {
-            const params = {
-                page: page + 1,
-                query: keyword
-            }
-            response = await tmdbApi.search(props.category, {params});
-        }
-        setItems([...items, ...response.results]);
-        setPage(page + 1);
-    }
+    // const loadMore = async () => {
+    //     let response = null;
+    //     if (keyword === undefined) {
+    //         const params = {
+    //             page: page + 1
+    //         };
+    //         switch(props.category) {
+    //             case category.movie:
+    //                 response = await tmdbApi.getMoviesList(movieType.upcoming, {params});
+    //                 break;
+    //             default:
+    //                 response = await tmdbApi.getTvList(tvType.popular, {params});
+    //         }
+    //     } else {
+    //         const params = {
+    //             page: page + 1,
+    //             query: keyword
+    //         }
+    //         response = await tmdbApi.search(props.category, {params});
+    //     }
+    //     setItems([...items, ...response.results]);
+    //     setPage(page + 1);
+    // }
 
     return (
         <>
@@ -76,13 +80,13 @@ const MovieGrid = props => {
                     items.map((item, i) => <MovieCard category={props.category} item={item} key={i}/>)
                 }
             </div>
-            {
+            {/* {
                 page < totalPage ? (
                     <div className="movie-grid__loadmore">
                         <OutlineButton className="small" onClick={loadMore}>Load more</OutlineButton>
                     </div>
                 ) : null
-            }
+            } */}
         </>
     );
 }
