@@ -8,10 +8,10 @@ app = Flask(__name__)
 
 cors = CORS(app)
 
-movies_list = pickle.load(open('movies.pkl', 'rb'))
+movies_list = pickle.load(open('movies32K.pkl', 'rb'))
 movies = pd.DataFrame(movies_list)
 print(movies)
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+similarity = pickle.load(open('latest.pkl', 'rb'))
 API_key = '2effdefc3ea56a2c730e827bc2f4e2e2'
 
 
@@ -31,17 +31,18 @@ def get_data(API_key, Movie_ID):
 @app.route('/movies', methods=['GET'])
 def recommend_movies():
     id = request.args.get('id')
-    index = movies[movies['movie_id'] == int(id)].index[0]
+    index = movies[movies['id'] == int(id)].index[0]
     print(index)
     recommended_movie_names = []
     data = []
-    distances = sorted(
-        list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
-    for i in distances[1:15]:
+    # distances = sorted(
+    #     list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
+    distances = similarity.iloc[index]
+    for i in distances:
         recommended_movie_names.append(str(movies.iloc[i[0]].title))
-    for movie in recommended_movie_names:
-        text = get_data(API_key, movie)
-        data.append(text)
+    # for movie in recommended_movie_names:
+    #     text = get_data(API_key, movie)
+    #     data.append(text)
     return jsonify(recommended_movie_names)
 
 

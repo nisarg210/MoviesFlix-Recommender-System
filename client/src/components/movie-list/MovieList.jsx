@@ -20,56 +20,59 @@ import { actionTypes } from "../../reducer";
 const MovieList = (props) => {
   const { id, type } = props;
   const [items, setItems] = useState([]);
-  const [{ recommend, top ,loading}, dispatch] = useStateValue();
+  const [{ recommend, top, loading }, dispatch] = useStateValue();
   console.log(recommend, "mine");
 
   useEffect(() => {
     const getRecomendation = async () => {
       if (type !== "similar") {
         dispatch({
-            type: actionTypes.SET_RECOMMEND,
-            recommend: top,
-          });
+          type: actionTypes.SET_RECOMMEND,
+          recommend: top,
+        });
       } else {
-        
-        try {
-          const response = await axios.get(
-            `http://127.0.0.1:5000/movies?id=${id}`
-          );
-          console.log(response);
-          let list = [];
-          const ids = response.data;
-          console.log(ids);
-          const e = await ids.forEach(async (id) => {
-            await axios
-              .get(
-                `https://api.themoviedb.org/3/movie/${id}?api_key=2effdefc3ea56a2c730e827bc2f4e2e2`
-              )
-              .then(function (response) {
-                console.log("hihihi");
-                list.push(response.data);
-              });
-          });
-          console.log(list, "list");
-          console.log(e);
-          if(e){
-            dispatch({
-              type: actionTypes.SET_RECOMMEND,
-              recommend: list,
-            });
-          }
-          
-         
-        } catch (error) {
-          console.log(error);
-        }
+        const response = await axios.get(
+          `http://127.0.0.1:5000/movies?id=${id}`
+        );
+        console.log(response.data, "itsme");
+        dispatch({
+          type: actionTypes.SET_RECOMMEND,
+          recommend: response.data,
+        });
+        // try {
+        //   const response = await axios.get(
+        //     `http://127.0.0.1:5000/movies?id=${id}`
+        //   );
+        //   console.log(response);
+        //   let list = [];
+        //   const ids = response.data;
+        //   console.log(ids);
+        //   const e = await ids.forEach(async (id) => {
+        //     await axios
+        //       .get(
+        //         `https://api.themoviedb.org/3/movie/${id}?api_key=2effdefc3ea56a2c730e827bc2f4e2e2`
+        //       )
+        //       .then(function (response) {
+        //         console.log("hihihi");
+        //         list.push(response.data);
+        //       });
+        //   });
+        //   console.log(list, "list");
+        //   console.log(e);
+
+        //     dispatch({
+        //       type: actionTypes.SET_RECOMMEND,
+        //       recommend: list,
+        //     });
+
+        // } catch (error) {
+        //   console.log(error);
+        // }
       }
     };
-    getRecomendation()
-    
+    getRecomendation();
   }, [id]);
- 
-  
+
   console.log(props.category);
   console.log(items, "in detail");
   return (

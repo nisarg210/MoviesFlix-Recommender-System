@@ -19,8 +19,8 @@ const headerNav = [
         path: '/movie'
     },
     {
-        display: 'TV Series',
-        path: '/tv'
+        display: 'Wish List',
+        path: '/wishlist'
     }
 ];
 
