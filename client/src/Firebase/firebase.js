@@ -1,5 +1,5 @@
-import firebase from "firebase/app"
-
+import firebase from "firebase"
+import 'firebase/firestore'
 const firebaseConfig = {
     apiKey: "AIzaSyBmVoGbG1mre0dTSE94-o22SXJnekE69pA",
     authDomain: "moviesflix-b56f4.firebaseapp.com",
@@ -10,5 +10,5 @@ const firebaseConfig = {
   };
 
   const fb=firebase.initializeApp(firebaseConfig);
-
-  export {fb};
+  const db = fb.firestore();
+  export {fb,db};

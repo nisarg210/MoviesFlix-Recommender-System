@@ -1,15 +1,15 @@
 import mylist from './assets/mylist.json'
 export const initialState = {
-  user: localStorage.getItem("user"),
+  user: JSON.parse(localStorage.getItem("user")),
   recommend: mylist[1],
   top:mylist[1],
-  loading: false
+  wishlist: []
 };
 
 export const actionTypes = {
   SET_USER: "SET_USER",
   SET_RECOMMEND: "SET_RECOMMEND",
-  SET_LOADING:"SET_LOADING"
+  SET_WISHLIST:"SET_WISHLIST"
 };
 
 const reducer = (state, action) => {
@@ -26,10 +26,10 @@ const reducer = (state, action) => {
         ...state,
         recommend: action.recommend,
       };
-      case actionTypes.SET_LOADING:
+      case actionTypes.SET_WISHLIST:
       return {
         ...state,
-        recommend: action.loading,
+        wishlist: action.wishlist,
       };
 
     default:

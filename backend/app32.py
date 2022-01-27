@@ -39,11 +39,24 @@ def recommend_movies():
     #     list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
     distances = similarity.iloc[index]
     for i in distances:
-        recommended_movie_names.append(str(movies.iloc[i[0]].title))
-    # for movie in recommended_movie_names:
-    #     text = get_data(API_key, movie)
-    #     data.append(text)
-    return jsonify(recommended_movie_names)
+        recommended_movie_names.append(str(movies.iloc[i[0]].id))
+    for movie in recommended_movie_names:
+        text = get_data(API_key, movie)
+        data.append(text)
+    return jsonify(data)
+
+
+@app.route('/wishlist', methods=['POST'])
+def getDetail():
+    request_data = request.get_json()
+
+    id = request_data['wishlist']
+    data = []
+    for movie in id:
+        movie = str(movie)
+        text = get_data(API_key, movie)
+        data.append(text)
+    return jsonify(data)
 
 
 if __name__ == '__main__':

@@ -8,6 +8,9 @@ import Button, { OutlineButton } from '../button/Button';
 import Input from '../input/Input'
 import mylist from'../../assets/mylist.json'
 import tmdbApi, { category, movieType, tvType } from '../../api/tmdbApi';
+import { useStateValue } from '../../StateProvider';
+import axios from 'axios';
+import { actionTypes } from '../../reducer';
 
 const MovieGrid = props => {
 
@@ -15,9 +18,10 @@ const MovieGrid = props => {
 
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(0);
-
+    const [{ wishlist }, dispatch] = useStateValue();
+const [search, setSearch] = useState(true);
     const { keyword } = useParams();
-
+    const {category}=props;
     useEffect(() => {
        
         // const getList = async () => {
@@ -42,8 +46,25 @@ const MovieGrid = props => {
         //    console.log(mylist[0],"hlsfdl");
         //     setTotalPage(response.total_pages);
         // }
-       setItems(mylist[0])
-        // getList();
+       const getList=async()=>{
+         
+               const payload= { "wishlist":wishlist };
+               if(wishlist!=null){
+                const response = await axios.post("http://127.0.0.1:5000/wishlist",payload)
+                console.log(response.data);
+                setItems(response.data)
+               }
+               
+       }
+       if(category=='wishlist'){
+        getList();
+        setSearch(false)
+       }
+       else{
+        setItems(mylist[0])
+       }
+       
+       
     }, []);
 
     // const loadMore = async () => {
@@ -73,11 +94,11 @@ const MovieGrid = props => {
     return (
         <>
             <div className="section mb-3">
-                <MovieSearch category={props.category} keyword={keyword}/>
+               {search?(<MovieSearch category={props.category} keyword={keyword}/>):('')} 
             </div>
             <div className="movie-grid">
                 {
-                    items.map((item, i) => <MovieCard category={props.category} item={item} key={i}/>)
+                    items.map((item, i) => <MovieCard category="movie" item={item} key={i}/>)
                 }
             </div>
             {/* {

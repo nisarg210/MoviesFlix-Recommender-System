@@ -107,6 +107,17 @@
     }
 }
 
+.small{
+    button {
+        
+        top: 2px;
+
+        @include mobile {
+            right: 1px;
+            top: 1px;
+        }
+    }
+}
 .video {
     margin-bottom: 3rem;
 

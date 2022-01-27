@@ -5,12 +5,28 @@ import { OutlineButton } from '../components/button/Button';
 import HeroSlide from '../components/hero-slide/HeroSlide';
 import MovieList from '../components/movie-list/MovieList'
 import mylist from '../assets/mylist.json'
+import {db} from '../Firebase/firebase'
+import { useStateValue } from '../StateProvider';
+import { actionTypes } from '../reducer';
+
 const Home = () => {
+    const [{ user }, dispatch] = useStateValue();
 
     const [popular, setPopular] = useState([]);
 
     useEffect(() => {
-      
+    console.log(user);
+        db.collection("wishlist").doc(user.uid)
+        .onSnapshot((doc) => {
+            const data=doc.data();
+            console.log(data.ids);
+            dispatch({
+                type: actionTypes.SET_WISHLIST,
+                wishlist: data.ids,
+              });
+            console.log("Current data: ", doc.data());
+        });
+    
     setPopular(mylist[1])
       
     }, []);

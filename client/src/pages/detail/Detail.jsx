@@ -12,23 +12,66 @@ import MovieList from "../../components/movie-list/MovieList";
 import axios from "axios";
 import { useStateValue } from "../../StateProvider";
 import ClipLoader from "react-spinners/ClipLoader";
+import Button, { OutlineButton } from "../../components/button/Button";
+import { fb } from "../../Firebase/firebase";
 const Detail = () => {
   const { category, id } = useParams();
 
   const [item, setItem] = useState(null);
-  const [{ recommend,loading }, dispatch] = useStateValue();
-
+  const [{ recommend, loading, user, wishlist }, dispatch] = useStateValue();
+  const [removed, setremoved] = useState(false);
+  const addToList = async (user) => {
+    let db = fb.firestore();
+    const userRef = db.doc(`wishlist/${user.uid}`);
+    if (removed) {
+      console.log("entering removie");
+      try {
+        const arr = wishlist.filter(function (item) {
+          return item != id;
+        });
+        console.log(arr);
+        userRef.set({
+          ids: arr,
+        });
+        
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      if (user) {
+        console.log(user.uid);
+        console.log(db);
+        try {
+          userRef.set({
+            ids: [...wishlist, item.id],
+          });
+          
+          console.log("done");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  };
   useEffect(() => {
     const getDetail = async () => {
       const response = await tmdbApi.detail(category, id, { params: {} });
+      wishlist.forEach(ids => {
+        if(ids==id)
+        {
+          setremoved(true);
+        }
+        else{
+          setremoved(false)
+        }
+      });
+
+     
       setItem(response);
       window.scrollTo(0, 0);
     };
     getDetail();
-  }, [id, recommend]);
-  
-  
-  
+  }, [id, recommend,wishlist]);
 
   return (
     <>
@@ -70,6 +113,14 @@ const Detail = () => {
                 </div>
                 <CastList id={item.id} />
               </div>
+              <Button
+                className="small"
+                onClick={() => {
+                  addToList(user);
+                }}
+              >
+                {removed ? "Remove from list" : "Add to my list"}
+              </Button>
             </div>
           </div>
           <div className="container">

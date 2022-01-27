@@ -53,6 +53,10 @@ const Header = () => {
             type:actionTypes.SET_USER,
             user:null
         })
+        dispatch({
+            type:actionTypes.SET_WISHLIST,
+            wishlist:[]
+        })
         localStorage.clear();
     }
     return (

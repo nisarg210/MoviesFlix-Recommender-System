@@ -1,35 +1,31 @@
 import React from "react";
 import GoogleButton from "react-google-button";
 import { fb } from "../Firebase/firebase";
-import firebase from 'firebase'
+import firebase from "firebase";
 import { useStateValue } from "../StateProvider";
 import { actionTypes } from "../reducer";
 
 const Signin = () => {
-  const [state,dispatch]=useStateValue()
+  const [state, dispatch] = useStateValue();
   const signinwithfirebase = () => {
     var google_provider = new firebase.auth.GoogleAuthProvider();
-    fb
-      .auth()
+    fb.auth()
       .signInWithPopup(google_provider)
       .then((result) => {
-        console.log(result);
-        localStorage.setItem("user",JSON.stringify(result.user))
+        console.log(result.user);
+        localStorage.setItem("user",JSON.stringify(result.user) );
         dispatch({
-          type:actionTypes.SET_USER,
-          user:result.user
-        })
-        
+          type: actionTypes.SET_USER,
+          user: result.user,
+        });
       })
-      .catch((err)=>{
-          console.log(err)
-      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div>
-      <GoogleButton
-        onClick={signinwithfirebase}
-      />
+      <GoogleButton onClick={signinwithfirebase} />
     </div>
   );
 };
