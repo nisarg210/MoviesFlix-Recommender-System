@@ -68,7 +68,7 @@ const Detail = () => {
 
      
       setItem(response);
-      window.scrollTo(0, 0);
+      // window.scrollTo(0, 0);
     };
     getDetail();
   }, [id, recommend,wishlist]);

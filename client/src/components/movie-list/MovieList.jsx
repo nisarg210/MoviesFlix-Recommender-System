@@ -5,6 +5,7 @@ import "./movie-list.scss";
 
 import { SwiperSlide, Swiper } from "swiper/react";
 import { Link } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 import Button from "../button/Button";
 
@@ -22,7 +23,7 @@ const MovieList = (props) => {
   const [items, setItems] = useState([]);
   const [{ recommend, top, loading }, dispatch] = useStateValue();
   console.log(recommend, "mine");
-
+  const [load, setLoad] = useState(false);
   useEffect(() => {
     const getRecomendation = async () => {
       if (type !== "similar") {
@@ -31,6 +32,8 @@ const MovieList = (props) => {
           recommend: top,
         });
       } else {
+        setLoad(true);
+        window.scrollTo(0, 0);
         const response = await axios.get(
           `http://127.0.0.1:5000/movies?id=${id}`
         );
@@ -39,6 +42,7 @@ const MovieList = (props) => {
           type: actionTypes.SET_RECOMMEND,
           recommend: response.data,
         });
+        setLoad(false);
         // try {
         //   const response = await axios.get(
         //     `http://127.0.0.1:5000/movies?id=${id}`
@@ -76,15 +80,29 @@ const MovieList = (props) => {
   console.log(props.category);
   console.log(items, "in detail");
   return (
-    <div className="movie-list">
-      <Swiper grabCursor={true} spaceBetween={10} slidesPerView={"auto"}>
-        {recommend.map((item, i) => (
-          <SwiperSlide key={i}>
-            <MovieCard item={item} category={props.category} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
+    <>
+      {load ? (
+        <div className="loading">
+          <ReactLoading
+            type="bubbles"
+            height="200px"
+            width="200px"
+            color="#999999"
+          />
+        </div>
+      ) : (
+        <div className="movie-list">
+          {" "}
+          <Swiper grabCursor={true} spaceBetween={10} slidesPerView={"auto"}>
+            {recommend.map((item, i) => (
+              <SwiperSlide key={i}>
+                <MovieCard item={item} category={props.category} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
+    </>
   );
 };
 

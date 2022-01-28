@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { useParams } from "react-router";
-
+import "./videolist.scss";
 import tmdbApi from "../../api/tmdbApi";
 
 const VideoList = (props) => {
@@ -12,7 +12,7 @@ const VideoList = (props) => {
   useEffect(() => {
     const getVideos = async () => {
       const res = await tmdbApi.getVideos(category, props.id);
-     
+
       setVideos(res.results.slice(0, 2));
     };
     getVideos();
@@ -42,12 +42,14 @@ const Video = (props) => {
       <div className="video__title">
         <h2>{item.name}</h2>
       </div>
+      <div className="iframe">
       <iframe
         src={`https://www.youtube.com/embed/${item.key}`}
         ref={iframeRef}
-        width="100%"
+        width="50%"
         title="video"
       ></iframe>
+      </div>
     </div>
   );
 };

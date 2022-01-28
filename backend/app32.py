@@ -4,15 +4,20 @@ from flask_cors import CORS
 import pandas as pd
 import requests
 import json
+from fuzzywuzzy import process
 app = Flask(__name__)
 
 cors = CORS(app)
 
 movies_list = pickle.load(open('movies32K.pkl', 'rb'))
 movies = pd.DataFrame(movies_list)
+movies_list_mini = pickle.load(open('movies32Kmini.pkl', 'rb'))
+movies_mini = pd.DataFrame(movies_list_mini)
 print(movies)
 similarity = pickle.load(open('latest.pkl', 'rb'))
 API_key = '2effdefc3ea56a2c730e827bc2f4e2e2'
+
+print(movies_mini.loc[3609])
 
 
 def get_data(API_key, Movie_ID):
@@ -56,6 +61,33 @@ def getDetail():
         movie = str(movie)
         text = get_data(API_key, movie)
         data.append(text)
+    return jsonify(data)
+
+@app.route('/movie/top', methods=['POST'])
+def getDetailTop():
+    request_data = request.get_json()
+
+    id = request_data['top']
+    data = []
+    for movie in id:
+        movie = str(movie)
+        text = get_data(API_key, movie)
+        data.append(text)
+    return jsonify(data)
+
+@app.route('/search', methods=['GET'])
+def sendresult():
+    import time
+    t = time.process_time()
+    movie_name = str(request.args.get('name'))
+    idx = process.extract(movie_name, movies_mini['title'], limit=20)
+    data = []
+    for index in idx:
+        movieid = str(movies_mini.loc[index[2]].id)
+        text = get_data(API_key, movieid)
+        data.append(text)
+    elapsed_time = time.process_time() - t
+    print(elapsed_time)
     return jsonify(data)
 
 
