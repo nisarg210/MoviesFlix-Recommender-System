@@ -20,7 +20,7 @@ const MovieGrid = (props) => {
 
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  const [{ wishlist }, dispatch] = useStateValue();
+  const [{ wishlist,top_100 }, dispatch] = useStateValue();
   const [search, setSearch] = useState(true);
   const { keyword } = useParams();
   const { category } = props;
@@ -96,7 +96,8 @@ const MovieGrid = (props) => {
           console.log(arr);
           let res = [];
           arr.forEach((ids) => {
-            res.push(top100[ids].id);
+            console.log(top_100[ids].id);
+            res.push(top_100[ids].id);
           });
           const resp = await axios.post(
             "https://moviesflix-recommend-api.herokuapp.com/movie/top",

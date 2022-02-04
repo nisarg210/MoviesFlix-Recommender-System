@@ -1,15 +1,18 @@
 import mylist from './assets/mylist.json'
+import top100 from './assets/top100.json'
 export const initialState = {
   user: JSON.parse(localStorage.getItem("user")),
   recommend: mylist[1],
   top:mylist[1],
-  wishlist: []
+  wishlist: [],
+  top_100:top100
 };
 
 export const actionTypes = {
   SET_USER: "SET_USER",
   SET_RECOMMEND: "SET_RECOMMEND",
-  SET_WISHLIST:"SET_WISHLIST"
+  SET_WISHLIST:"SET_WISHLIST",
+  SET_TOP:"SET_TOP"
 };
 
 const reducer = (state, action) => {
@@ -30,6 +33,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         wishlist: action.wishlist,
+      };
+      case actionTypes.SET_TOP:
+      return {
+        ...state,
+        top_100: action.top_100,
       };
 
     default:

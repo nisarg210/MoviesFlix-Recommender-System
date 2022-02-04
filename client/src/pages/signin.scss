@@ -1,3 +1,4 @@
+@use "../scss/" as *;
 .signinfull{
     display: grid;
    background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url("https://images3.alphacoders.com/690/thumb-1920-690865.jpg");
@@ -14,7 +15,10 @@
     height: 60vh;
     width:30vw;
     align-items: center;
-
+    @include mobile {
+        width: 85vw;
+       
+      }
 }
 .logo_sign{
     margin-top: 100px;
