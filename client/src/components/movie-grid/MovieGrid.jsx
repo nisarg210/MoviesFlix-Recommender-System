@@ -7,7 +7,7 @@ import MovieCard from "../movie-card/MovieCard";
 import Button, { OutlineButton } from "../button/Button";
 import Input from "../input/Input";
 import mylist from "../../assets/mylist.json";
-import top100 from "../../assets/top100.json"
+import top100 from "../../assets/top100.json";
 import tmdbApi, { category, movieType, tvType } from "../../api/tmdbApi";
 import { useStateValue } from "../../StateProvider";
 import axios from "axios";
@@ -33,7 +33,7 @@ const MovieGrid = (props) => {
     history.push(`/movie/search/${searchv}`);
     try {
       const response = await axios.get(
-        `http://127.0.0.1:5000/search?name=${searchv}`
+        `https://moviesflix-recommend-api.herokuapp.com/search?name=${searchv}`
       );
       setItems(response.data);
     } catch (error) {
@@ -94,28 +94,30 @@ const MovieGrid = (props) => {
             if (arr.indexOf(r) === -1) arr.push(r);
           }
           console.log(arr);
-          let res=[]
-          arr.forEach(ids => {
-              res.push(top100[ids].id)
+          let res = [];
+          arr.forEach((ids) => {
+            res.push(top100[ids].id);
           });
           const resp = await axios.post(
-            "http://127.0.0.1:5000/movie/top",
-            {top:res}
+            "https://moviesflix-recommend-api.herokuapp.com/movie/top",
+            {
+              top: res,
+            }
           );
           console.log(resp.data, "newapi");
           response = resp.data;
           setLoad(false);
           break;
         case "wishlist":
-            setSearch(false)
+          setSearch(false);
           const payload2 = { wishlist: wishlist };
           if (wishlist != null) {
             const res = await axios.post(
-              "http://127.0.0.1:5000/wishlist",
+              "https://moviesflix-recommend-api.herokuapp.com/wishlist",
               payload2
             );
             response = res.data;
-            console.log(response.data);
+            console.log(response);
           }
       }
       setItems(response);
@@ -127,7 +129,7 @@ const MovieGrid = (props) => {
     //   const payload = { wishlist: wishlist };
     //   if (wishlist != null) {
     //     const response = await axios.post(
-    //       "http://127.0.0.1:5000/wishlist",
+    //       "https://moviesflix-recommend-api.herokuapp.com/wishlist",
     //       payload
     //     );
     //     console.log(response.data);
@@ -178,7 +180,7 @@ const MovieGrid = (props) => {
             <Input
               type="text"
               placeholder="Enter keyword"
-              value={keyword}
+              value={searchv}
               onChange={(e) => setSearchv(e.target.value)}
             />
             <Button className="small" onClick={getmovies}>

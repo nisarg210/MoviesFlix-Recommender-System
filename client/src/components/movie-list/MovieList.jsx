@@ -35,7 +35,7 @@ const MovieList = (props) => {
         setLoad(true);
         window.scrollTo(0, 0);
         const response = await axios.get(
-          `http://127.0.0.1:5000/movies?id=${id}`
+          `https://moviesflix-recommend-api.herokuapp.com/movies?id=${id}`
         );
         console.log(response.data, "itsme");
         dispatch({
@@ -45,7 +45,7 @@ const MovieList = (props) => {
         setLoad(false);
         // try {
         //   const response = await axios.get(
-        //     `http://127.0.0.1:5000/movies?id=${id}`
+        //     `https://moviesflix-recommend-api.herokuapp.com/movies?id=${id}`
         //   );
         //   console.log(response);
         //   let list = [];
