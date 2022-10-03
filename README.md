@@ -1,8 +1,6 @@
 # Movie-Recommender-System
 A Web Base user-item Movie Recommendation Engine using Content-Based Filtering By matrix factorizations algorithm and
 The recommendation based on the users' film preferences based on their past choices and behavior.
-### Screenshot
-
 
 
 ### Technologies Used
